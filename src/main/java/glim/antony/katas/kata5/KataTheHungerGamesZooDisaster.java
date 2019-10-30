@@ -1,12 +1,14 @@
 package glim.antony.katas.kata5;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * https://www.codewars.com/kata/5902bc7aba39542b4a00003d/train/java
+ * https://www.codewars.com/kata/5902bc7aba39542b4a00003d/solutions/java
  *
  * Story
  * A freak power outage at the zoo has caused all of the electric cage doors to malfunction and swing open...
@@ -84,12 +86,40 @@ import java.util.Map;
  * ["fox,bug,chicken,grass,sheep", "chicken eats bug", "fox eats chicken", "sheep eats grass", "fox eats sheep", "fox"]
  */
 public class KataTheHungerGamesZooDisaster {
+
     public static String[] whoEatsWho(final String zoo) {
-        // Your code here
-        return new String[]{zoo, zoo};
+        Map<String, List<String>> huntersFoods = huntersFoods = mapInitialization();
+        List<String> units = new ArrayList<>(Arrays.asList(zoo.split(",")));
+        int unitsSizeAtStart = units.size();
+        List<String> history = new ArrayList<>();
+        history.add(String.join(",", units));
+        System.out.println(history);
+        int i = 0;
+        while (i + 1 <= units.size()){
+            if (i - 1 >= 0){
+                if (canEat(units.get(i), units.get(i - 1), huntersFoods)){
+                    history.add(units.get(i) + " eats " + units.get(i - 1));
+                    System.out.println(units.get(i) + " eats " + units.get(i - 1));
+                    units.remove(i - 1);
+                    if (i - 2 >= 0) i -=2;
+                    else i = 0;
+                    continue;
+                }
+            }
+            if (i + 1 < units.size() && canEat(units.get(i), units.get(i + 1), huntersFoods)){
+                history.add(units.get(i) + " eats " + units.get(i + 1));
+                System.out.println(units.get(i) + " eats " + units.get(i + 1));
+                units.remove(i + 1);
+                continue;
+            }
+            i++;
+        }
+        history.add(String.join(",", units));
+        System.out.println(history);
+        return history.toArray(new String[history.size()]);
     }
 
-    public Map<String, List<String>> preparation(){
+    public static Map<String, List<String>> mapInitialization(){
         String initialCondition = "antelope eats grass\n" +
                 "big-fish eats little-fish\n" +
                 "bug eats leaves\n" +
@@ -108,9 +138,31 @@ public class KataTheHungerGamesZooDisaster {
                 "lion eats cow\n" +
                 "panda eats leaves\n" +
                 "sheep eats grass";
-        String[] eatsPears = initialCondition.split("\n");
-        System.out.println("DEBUG" + Arrays.toString(eatsPears));
-        Map<String, List<String>> preparedList = new HashMap<>();
-        return preparedList;
+
+        return Arrays
+                .stream(initialCondition.split("\n"))
+                .map(s -> s.split(" eats "))
+                .collect(Collectors.groupingBy(s -> s[0], Collectors.mapping(s -> s[1], Collectors.toList())));
+    }
+
+    public static boolean canEat(String hunter, String food, Map<String, List<String>> huntersFoods){
+        return huntersFoods.getOrDefault(hunter, new ArrayList<>()).contains(food);
     }
 }
+
+
+//        //Without Stream api:
+//        String[] eatsPears = initialCondition.split("\n");
+//        Map<String, List<String>> preparedList = new HashMap<>();
+//        for (String s : eatsPears) {
+//            preparedList
+//                    .compute(s.split(" eats ")[0], (k, v) -> v == null ? new ArrayList<>() : v)
+//                    .add(s.split(" eats ")[1]);
+//        }
+
+//        //More examples
+//        public Map<String, String > mapInitialization(String source) {
+//            return Arrays
+//                    .stream(source.split("\n"))
+//                    .collect(Collectors.toMap(k -> k.split(" eats ")[0], v -> v.split( " eats ")[1], (k,v) -> k + " " + v));
+//        }
