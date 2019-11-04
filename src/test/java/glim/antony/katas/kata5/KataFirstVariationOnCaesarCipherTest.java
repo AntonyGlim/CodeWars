@@ -79,7 +79,6 @@ public class KataFirstVariationOnCaesarCipherTest {
         assertEquals('C', (char) KataFirstVariationOnCaesarCipher.shift('A', 2));
         assertEquals('B', (char) KataFirstVariationOnCaesarCipher.shift('Z', 2));
         assertEquals('(', (char) KataFirstVariationOnCaesarCipher.shift('(', 2));
-        assertEquals('u', (char) KataFirstVariationOnCaesarCipher.deShift('a', 6));
     }
 
     @Test
