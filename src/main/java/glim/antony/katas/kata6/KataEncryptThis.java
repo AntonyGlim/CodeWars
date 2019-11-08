@@ -1,7 +1,11 @@
 package glim.antony.katas.kata6;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * https://www.codewars.com/kata/5848565e273af816fb000449/train/java
+ * https://www.codewars.com/kata/5848565e273af816fb000449/solutions/java
  *
  * Description:
  * Encrypt this!
@@ -20,10 +24,30 @@ package glim.antony.katas.kata6;
  * Kata.encryptThis("hello world") => "104olle 119drlo"
  */
 public class KataEncryptThis {
+
     public static String encryptThis(String text) {
-        if (text.length() < 3) return text;
-        String result = text.charAt(1) + text.substring(2, text.length() - 2);
-        System.out.println(result);
-        return result;
+        return Arrays.stream(text.split(" "))
+                .map(KataEncryptThis::encryptSingleWord)
+                .collect(Collectors.joining(" "));
     }
+
+    public static String encryptSingleWord(String word){
+        switch (word.length()){
+            case 0: return "";
+            case 1: return (int) word.charAt(0) + "";
+            case 2: return (int) word.charAt(0) + word.substring(1);
+            default: return (int) word.charAt(0) + encrypt(word.substring(1));
+        }
+    }
+
+    public static String encrypt(String word){
+        return word.charAt(word.length() - 1) + word.substring(1, word.length() - 1) + word.charAt(0);
+    }
+
+    //Other solution
+//    public static String encryptThis(String text) {
+//        return compile(" ").splitAsStream(text)
+//                .map(w -> w.isEmpty() ? "" : (int) w.charAt(0) + (w.length() > 2 ? w.replaceFirst(".(.)(.*)(.)", "$3$2$1") : w.substring(1)))
+//                .collect(joining(" "));
+//    }
 }

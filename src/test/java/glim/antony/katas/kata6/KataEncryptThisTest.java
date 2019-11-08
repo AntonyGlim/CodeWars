@@ -15,4 +15,18 @@ public class KataEncryptThisTest {
         assertEquals("87yh 99na 119e 110to 97ll 98e 108eki 116tah 119esi 111dl 98dri", KataEncryptThis.encryptThis("Why can we not all be like that wise old bird"));
         assertEquals("84kanh 121uo 80roti 102ro 97ll 121ruo 104ple", KataEncryptThis.encryptThis("Thank you Piotr for all your help"));
     }
+
+    @Test
+    public void encryptSingleWord() {
+        assertEquals("65", KataEncryptThis.encryptSingleWord("A"));
+        assertEquals("119esiteirtuy", KataEncryptThis.encryptSingleWord("wysiteirtue"));
+        assertEquals("111dl", KataEncryptThis.encryptSingleWord("old"));
+        assertEquals("111lw", KataEncryptThis.encryptSingleWord("owl"));
+    }
+
+    @Test
+    public void simpleTest(){
+        System.out.println("ManyToOne");
+        KataEncryptThis.encrypt("ManyToOne");
+    }
 }
