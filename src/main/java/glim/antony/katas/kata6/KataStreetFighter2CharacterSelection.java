@@ -88,7 +88,7 @@ import java.util.Objects;
  *
  * ['E.Honda', 'Chun Li', 'Ken', 'M.Bison', 'Sagat', 'Dhalsim', 'Sagat']
  */
-public class StreetFighter2CharacterSelection {
+public class KataStreetFighter2CharacterSelection {
     public static String[] streetFighterSelection(String[][] fighters, int[] position, String[] moves){
         String[] fightersWereSelected = new String[moves.length];
         Position p = new Position(position[0], position[1]);
